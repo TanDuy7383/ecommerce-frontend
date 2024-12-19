@@ -1,0 +1,132 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin-right: 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.search-login {
+    display: flex;
+    align-items: center;
+}
+
+#search {
+    margin-right: 1rem;
+    padding: 0.5rem;
+    border: 2px solid #333;
+    border-radius: 5px;
+    outline: none;
+}
+
+#search-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 1rem;
+}
+
+#search-btn:hover {
+    background-color: #0056b3;
+}
+
+.cart {
+    margin-left: 1rem;
+    color: white;
+    text-decoration: none;
+}
+
+.cart:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 2rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.product {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 1rem;
+    padding: 1rem;
+    width: calc(33.333% - 2rem);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.product:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.product h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.product p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.product button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.product button:hover {
+    background-color: #0056b3;
+}
+
+#cart {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
