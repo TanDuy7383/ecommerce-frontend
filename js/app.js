@@ -13,9 +13,86 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartBtn = document.getElementById('cart-btn');
     const cart = [];
     const cartContainer = document.getElementById('cart');
+    const priceFilter = document.getElementById('price');
+    const menuItems = document.querySelectorAll('nav ul li a');
+    const loginLink = document.getElementById('login-link');
+    const signupLink = document.getElementById('signup-link');
+    const authModal = document.getElementById('auth-modal');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const loginSubmit = document.getElementById('login-submit');
+    const signupSubmit = document.getElementById('signup-submit');
 
     cartBtn.addEventListener('click', () => {
         cartContainer.classList.toggle('hidden');
+    });
+
+    loginLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        authModal.classList.remove('hidden');
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+    });
+
+    signupLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        authModal.classList.remove('hidden');
+        signupForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+    });
+
+    loginSubmit.addEventListener('click', () => {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        // Gửi yêu cầu đăng nhập đến máy chủ
+        fetch('https://your-server-endpoint.com/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('Đăng nhập thành công!');
+                authModal.classList.add('hidden');
+                // Xử lý khi đăng nhập thành công (ví dụ: lưu thông tin người dùng, cập nhật giao diện)
+            } else {
+                alert('Đăng nhập thất bại. Vui lòng thử lại.');
+            }
+        })
+        .catch(error => {
+            console.error('Có lỗi xảy ra:', error);
+            alert('Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại sau.');
+        });
+    });
+
+    signupSubmit.addEventListener('click', () => {
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        // Gửi yêu cầu đăng ký đến máy chủ
+        fetch('https://your-server-endpoint.com/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('Đăng ký thành công!');
+                authModal.classList.add('hidden');
+                // Xử lý khi đăng ký thành công (ví dụ: tự động đăng nhập, cập nhật giao diện)
+            } else {
+                alert('Đăng ký thất bại. Vui lòng thử lại.');
+            }
+        })
+        .catch(error => {
+            console.error('Có lỗi xảy ra:', error);
+            alert('Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.');
+        });
     });
 
     function addToCart(product) {
@@ -50,6 +127,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function applyFilters() {
+        const selectedPrice = priceFilter.value;
+        let filteredProducts = products;
+
+        if (selectedPrice !== 'all') {
+            filteredProducts = filteredProducts.filter(product => {
+                const price = product.price;
+                if (selectedPrice === '0-200') return price >= 0 && price <= 200;
+                if (selectedPrice === '201-500') return price > 200 && price <= 500;
+                if (selectedPrice === '501-1000') return price > 500 && price <= 1000;
+                if (selectedPrice === '1000+') return price > 1000;
+            });
+        }
+
+        renderProducts(filteredProducts);
+    }
+
+    function filterByCategory(category) {
+        let filteredProducts = products;
+
+        if (category !== 'all') {
+            filteredProducts = filteredProducts.filter(product => product.category === category);
+        }
+
+        renderProducts(filteredProducts);
+    }
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', (event) => {
+            event.preventDefault();
+            const category = item.getAttribute('data-category');
+            filterByCategory(category);
+        });
+    });
+
     searchInput.addEventListener('input', () => {
         const searchTerm = searchInput.value.toLowerCase();
         const filteredProducts = products.filter(product => 
@@ -58,6 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         renderProducts(filteredProducts);
     });
+
+    priceFilter.addEventListener('change', applyFilters);
 
     // Render all products initially
     renderProducts(products);
